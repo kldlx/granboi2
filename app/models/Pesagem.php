@@ -78,29 +78,29 @@ class Pesagem
     }
 
     public function calcularGmd($animalId)
-{
-    $primeira = $this->buscarPrimeiraPesagem($animalId);
-    $ultima = $this->buscarUltimaPesagem($animalId);
+    {
+        $primeira = $this->buscarPrimeiraPesagem($animalId);
+        $ultima = $this->buscarUltimaPesagem($animalId);
 
-    if (!$primeira || !$ultima) {
-        return null;
+        if (!$primeira || !$ultima) {
+            return null;
+        }
+
+        if ($primeira['id'] == $ultima['id']) {
+            return null;
+        }
+
+        $dataInicial = new DateTime($primeira['data_registro']);
+        $dataFinal = new DateTime($ultima['data_registro']);
+
+        $dias = $dataInicial->diff($dataFinal)->days;
+
+        if ($dias <= 0) {
+            $dias = 1;
+        }
+
+        $ganhoPeso = $ultima['peso'] - $primeira['peso'];
+
+        return round($ganhoPeso / $dias, 2);
     }
-
-    if ($primeira['id'] == $ultima['id']) {
-        return null;
-    }
-
-    $dataInicial = new DateTime($primeira['data_registro']);
-    $dataFinal = new DateTime($ultima['data_registro']);
-
-    $dias = $dataInicial->diff($dataFinal)->days;
-
-    if ($dias <= 0) {
-        $dias = 1;
-    }
-
-    $ganhoPeso = $ultima['peso'] - $primeira['peso'];
-
-    return round($ganhoPeso / $dias, 2);
-}
 }

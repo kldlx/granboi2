@@ -13,12 +13,12 @@ class VacinaController extends Controller
                 '/public/assets/css/components/modal.css',
                 '/public/assets/css/components/vacinacao/vacinacaoModal.css',
                 '/public/assets/css/pages/vacinas/vacinas.css'
-],
+            ],
             'pageJs' => [
                 '/public/assets/js/validations/vacinacao/vacinacaoValidation.js',
-             '/public/assets/js/modals/vacinacao/cadastrarVacinacaoModal.js',
-             '/public/assets/js/pages/vacinas/vacinasPage.js'
-],
+                '/public/assets/js/modals/vacinacao/cadastrarVacinacaoModal.js',
+                '/public/assets/js/pages/vacinas/vacinasPage.js'
+            ],
             'vacinacoes' => $vacinacaoModel->listarTodas(),
             'animais' => $animalModel->listarTodos()
         ]);
@@ -62,9 +62,13 @@ class VacinaController extends Controller
         if (
             empty($dados['animal_id']) ||
             empty($dados['vacina']) ||
-            empty($dados['data_aplicacao'])
+            empty($dados['data_aplicacao']) ||
+            empty($dados['responsavel']) ||
+            empty($dados['lote_vacina']) ||
+            empty($dados['quantidade']) ||
+            empty($dados['via_aplicacao'])
         ) {
-            $erro = 'Preencha os campos obrigatórios: animal, vacina e data de aplicação.';
+            $erro = 'Preencha os campos obrigatórios: animal, vacina, data de aplicação, responsável, lote, quantidade e via de aplicação.';
         }
 
         if (!$erro && !empty($dados['data_aplicacao']) && $dados['data_aplicacao'] > date('Y-m-d')) {

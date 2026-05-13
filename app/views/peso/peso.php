@@ -60,80 +60,127 @@
 
     <aside class="peso-card">
 
-  <h2>Nova Pesagem</h2>
+      <h2>Nova Pesagem</h2>
 
-  <p>
-    Selecione um animal e registre o peso atual.
-  </p>
+      <p>
+        Pesquise um animal e registre o peso atual.
+      </p>
 
-  <div
-    class="peso-form-message"
-    id="pesoFormMessage"
-    hidden
-  ></div>
+      <div
+        class="peso-form-message"
+        id="pesoFormMessage"
+        hidden
+      ></div>
 
-  <?php if (!empty($animalSelecionado) && $animalSelecionado['status'] !== 'ativo'): ?>
-
-  <div class="peso-form-message error">
-    Não é possível registrar nova pesagem para animal <?= htmlspecialchars($animalSelecionado['status']) ?>.
-  </div>
-
-<?php endif; ?>
-
-  <form method="POST" action="<?= BASE_URL ?>/peso/salvar" id="formPesagem">
+      <form method="POST" action="<?= BASE_URL ?>/peso/salvar" id="formPesagem">
 
         <div class="peso-form-group">
 
-          <label for="animal_id">Animal</label>
+          <label for="peso_animal_search">Animal</label>
 
-          <select id="animal_id" name="animal_id" required>
+          <input
+            type="text"
+            id="peso_animal_search"
+            placeholder="Digite o brinco, raça ou lote do animal"
+            autocomplete="off"
+            value="<?= !empty($animalSelecionado) ? '#' . htmlspecialchars($animalSelecionado['brinco_identificador']) . (!empty($animalSelecionado['raca']) ? ' - ' . htmlspecialchars($animalSelecionado['raca']) : '') . (!empty($animalSelecionado['lote']) ? ' - ' . htmlspecialchars($animalSelecionado['lote']) : '') : '' ?>"
+          >
 
-            <option value="">Selecione um animal</option>
+          <input
+            type="hidden"
+            id="animal_id"
+            name="animal_id"
+            value="<?= !empty($animalSelecionado) ? htmlspecialchars($animalSelecionado['id']) : '' ?>"
+          >
+
+          <div
+            class="peso-animal-selected"
+            id="pesoAnimalSelecionado"
+            <?= !empty($animalSelecionado) ? '' : 'hidden' ?>
+          >
+            <?php if (!empty($animalSelecionado)): ?>
+              Animal selecionado:
+              #<?= htmlspecialchars($animalSelecionado['brinco_identificador']) ?>
+              <?= !empty($animalSelecionado['raca']) ? ' - ' . htmlspecialchars($animalSelecionado['raca']) : '' ?>
+              <?= !empty($animalSelecionado['lote']) ? ' - ' . htmlspecialchars($animalSelecionado['lote']) : '' ?>
+            <?php endif; ?>
+          </div>
+
+          <div
+            class="peso-animal-results"
+            id="pesoAnimalSearchResults"
+            hidden
+          >
 
             <?php foreach ($animais as $animal): ?>
 
-              <option
-                value="<?= htmlspecialchars($animal['id']) ?>"
-                <?= !empty($animalSelecionado) && $animalSelecionado['id'] == $animal['id'] ? 'selected' : '' ?>
+              <button
+                type="button"
+                class="peso-animal-option"
+                data-id="<?= htmlspecialchars($animal['id']) ?>"
+                data-url="<?= BASE_URL ?>/peso?animal_id=<?= htmlspecialchars($animal['id']) ?>"
+                data-label="#<?= htmlspecialchars($animal['brinco_identificador']) ?><?= !empty($animal['raca']) ? ' - ' . htmlspecialchars($animal['raca']) : '' ?><?= !empty($animal['lote']) ? ' - ' . htmlspecialchars($animal['lote']) : '' ?>"
+                data-search="<?= strtolower(htmlspecialchars($animal['brinco_identificador'] . ' ' . ($animal['raca'] ?? '') . ' ' . ($animal['lote'] ?? ''))) ?>"
               >
-                #<?= htmlspecialchars($animal['brinco_identificador']) ?>
-                <?= !empty($animal['raca']) ? ' - ' . htmlspecialchars($animal['raca']) : '' ?>
-              </option>
+                <strong>#<?= htmlspecialchars($animal['brinco_identificador']) ?></strong>
+
+                <?php if (!empty($animal['raca'])): ?>
+                  <span><?= htmlspecialchars($animal['raca']) ?></span>
+                <?php endif; ?>
+
+                <?php if (!empty($animal['lote'])): ?>
+                  <small><?= htmlspecialchars($animal['lote']) ?></small>
+                <?php endif; ?>
+
+                <?php if ($animal['status'] !== 'ativo'): ?>
+                  <em class="peso-animal-status peso-animal-status-<?= htmlspecialchars($animal['status']) ?>">
+                    <?= ucfirst(htmlspecialchars($animal['status'])) ?>
+                  </em>
+                <?php endif; ?>
+              </button>
 
             <?php endforeach; ?>
 
-          </select>
+          </div>
 
         </div>
 
         <div class="peso-form-group">
 
-  <label for="peso_atual">Peso atual registrado</label>
+          <label for="peso_atual">Peso atual registrado</label>
 
-  <input
-    type="text"
-    id="peso_atual"
-    value="<?= $pesoAtual !== null ? htmlspecialchars($pesoAtual) . ' kg' : 'Selecione um animal' ?>"
-    disabled
-  >
+          <input
+            type="text"
+            id="peso_atual"
+            value="<?= $pesoAtual !== null ? htmlspecialchars($pesoAtual) . ' kg' : 'Selecione um animal' ?>"
+            disabled
+          >
 
-</div>
+        </div>
 
-<div class="peso-form-group">
+        <div class="peso-form-group">
 
-  <label for="peso">Nova pesagem</label>
+          <label for="peso">Nova pesagem</label>
 
-  <input
-    type="number"
-    step="0.01"
-    id="peso"
-    name="peso"
-    placeholder="Ex: 430"
-    required
-    <?= empty($animalSelecionado) ? 'disabled' : '' ?>
-  >
+          <input
+            type="number"
+            step="0.01"
+            id="peso"
+            name="peso"
+            placeholder="Ex: 430"
+            required
+            <?= empty($animalSelecionado) || (!empty($animalSelecionado) && $animalSelecionado['status'] !== 'ativo') ? 'disabled' : '' ?>
+          >
 
-</div>
+        </div>
+
+        <?php if (!empty($animalSelecionado) && $animalSelecionado['status'] !== 'ativo'): ?>
+
+          <div class="peso-form-message error">
+            Não é possível registrar nova pesagem para animal <?= htmlspecialchars($animalSelecionado['status']) ?>.
+          </div>
+
+        <?php endif; ?>
 
         <div class="peso-form-group">
 
@@ -143,17 +190,19 @@
             id="observacao"
             name="observacao"
             placeholder="Ex: Pesagem realizada após manejo..."
+            <?= empty($animalSelecionado) || (!empty($animalSelecionado) && $animalSelecionado['status'] !== 'ativo') ? 'disabled' : '' ?>
           ></textarea>
 
         </div>
 
         <button
-  type="submit"
-  class="peso-submit-btn"
-  <?= !empty($animalSelecionado) && $animalSelecionado['status'] !== 'ativo' ? 'disabled' : '' ?>
->
-  Registrar Pesagem
-</button>
+          type="submit"
+          class="peso-submit-btn"
+          <?= empty($animalSelecionado) || (!empty($animalSelecionado) && $animalSelecionado['status'] !== 'ativo') ? 'disabled' : '' ?>
+        >
+          Registrar Pesagem
+        </button>
+
       </form>
 
     </aside>
@@ -227,7 +276,7 @@
 
               <tr>
                 <td colspan="3" class="peso-empty">
-                  Selecione um animal para visualizar o histórico.
+                  Pesquise e selecione um animal para visualizar o histórico.
                 </td>
               </tr>
 

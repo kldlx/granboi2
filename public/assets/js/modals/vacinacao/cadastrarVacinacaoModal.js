@@ -8,6 +8,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const formCadastrarVacinacao =
     document.getElementById('formCadastrarVacinacao');
 
+  const animalSearch =
+    document.getElementById('animal_search');
+
+  const animalIdInput =
+    document.getElementById('animal_id');
+
+  const animalStatusInput =
+    document.getElementById('animal_status');
+
+  const animalSelecionado =
+    document.getElementById('animalSelecionadoVacina');
+
+  const animalWarning =
+    document.getElementById('vacinacaoAnimalWarning');
+
+  const animalSearchResults =
+    document.getElementById('animalSearchResults');
+
+  const animalOptions =
+    document.querySelectorAll('.vacinacao-animal-option');
+
+  const btnSalvarVacinacao =
+    document.getElementById('btnSalvarVacinacao');
+
   function abrirModal(modal) {
     if (!modal) {
       return;
@@ -50,6 +74,138 @@ document.addEventListener('DOMContentLoaded', () => {
     messageBox.innerText = '';
   }
 
+  function bloquearSalvar() {
+    if (!btnSalvarVacinacao) {
+      return;
+    }
+
+    btnSalvarVacinacao.disabled = true;
+  }
+
+  function liberarSalvar() {
+    if (!btnSalvarVacinacao) {
+      return;
+    }
+
+    btnSalvarVacinacao.disabled = false;
+  }
+
+  function limparAvisoAnimal() {
+    if (!animalWarning) {
+      return;
+    }
+
+    animalWarning.hidden = true;
+    animalWarning.innerText = '';
+  }
+
+  function mostrarAvisoAnimal(status) {
+    if (!animalWarning) {
+      return;
+    }
+
+    animalWarning.hidden = false;
+    animalWarning.innerText =
+      `Não é possível registrar vacinação para animal ${status}. Selecione um animal ativo para continuar.`;
+  }
+
+  function limparAnimalSelecionado() {
+    if (animalIdInput) {
+      animalIdInput.value = '';
+    }
+
+    if (animalStatusInput) {
+      animalStatusInput.value = '';
+    }
+
+    if (animalSelecionado) {
+      animalSelecionado.hidden = true;
+      animalSelecionado.innerText = '';
+    }
+
+    limparAvisoAnimal();
+    bloquearSalvar();
+  }
+
+  function esconderResultadosAnimais() {
+    if (animalSearchResults) {
+      animalSearchResults.hidden = true;
+    }
+  }
+
+  function mostrarResultadosAnimais() {
+    if (animalSearchResults) {
+      animalSearchResults.hidden = false;
+    }
+  }
+
+  function filtrarAnimais(termo) {
+    const termoBusca =
+      termo.trim().toLowerCase();
+
+    let totalVisivel = 0;
+
+    animalOptions.forEach((option) => {
+      const textoBusca =
+        option.dataset.search || '';
+
+      const deveMostrar =
+        termoBusca.length > 0 &&
+        textoBusca.includes(termoBusca);
+
+      option.hidden = !deveMostrar;
+
+      if (deveMostrar) {
+        totalVisivel++;
+      }
+    });
+
+    if (totalVisivel > 0) {
+      mostrarResultadosAnimais();
+      return;
+    }
+
+    esconderResultadosAnimais();
+  }
+
+  function selecionarAnimal(option) {
+    const animalId =
+      option.dataset.id || '';
+
+    const animalLabel =
+      option.dataset.label || '';
+
+    const animalStatus =
+      option.dataset.status || '';
+
+    if (animalIdInput) {
+      animalIdInput.value = animalId;
+    }
+
+    if (animalStatusInput) {
+      animalStatusInput.value = animalStatus;
+    }
+
+    if (animalSearch) {
+      animalSearch.value = animalLabel;
+    }
+
+    if (animalSelecionado) {
+      animalSelecionado.hidden = false;
+      animalSelecionado.innerText = `Animal selecionado: ${animalLabel}`;
+    }
+
+    if (animalStatus !== 'ativo') {
+      mostrarAvisoAnimal(animalStatus);
+      bloquearSalvar();
+    } else {
+      limparAvisoAnimal();
+      liberarSalvar();
+    }
+
+    esconderResultadosAnimais();
+  }
+
   if (abrirModalCadastrarVacinacao && modalCadastrarVacinacao) {
     abrirModalCadastrarVacinacao.addEventListener('click', () => {
       limparMensagemModal();
@@ -58,9 +214,51 @@ document.addEventListener('DOMContentLoaded', () => {
         formCadastrarVacinacao.reset();
       }
 
+      if (animalSearch) {
+        animalSearch.value = '';
+      }
+
+      limparAnimalSelecionado();
+      esconderResultadosAnimais();
+
+      animalOptions.forEach((option) => {
+        option.hidden = true;
+      });
+
       abrirModal(modalCadastrarVacinacao);
     });
   }
+
+  if (animalSearch) {
+    animalSearch.addEventListener('input', () => {
+      limparAnimalSelecionado();
+      filtrarAnimais(animalSearch.value);
+    });
+
+    animalSearch.addEventListener('focus', () => {
+      if (animalSearch.value.trim()) {
+        filtrarAnimais(animalSearch.value);
+      }
+    });
+  }
+
+  animalOptions.forEach((option) => {
+    option.hidden = true;
+
+    option.addEventListener('click', () => {
+      selecionarAnimal(option);
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    const clicouDentroBusca =
+      animalSearchResults?.contains(event.target) ||
+      animalSearch?.contains(event.target);
+
+    if (!clicouDentroBusca) {
+      esconderResultadosAnimais();
+    }
+  });
 
   document.querySelectorAll('[data-close-modal="modalCadastrarVacinacao"]').forEach((elemento) => {
     elemento.addEventListener('click', () => {
@@ -79,6 +277,17 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
 
       limparMensagemModal();
+
+      const statusSelecionado =
+        animalStatusInput?.value || '';
+
+      if (statusSelecionado && statusSelecionado !== 'ativo') {
+        mostrarMensagemModal(
+          'error',
+          `Não é possível registrar vacinação para animal ${statusSelecionado}.`
+        );
+        return;
+      }
 
       const erroValidacao =
         validarCadastroVacinacao();
@@ -142,7 +351,13 @@ document.addEventListener('DOMContentLoaded', () => {
           submitButton.disabled = false;
           submitButton.innerText = textoOriginalBotao;
         }
+
+        if (animalStatusInput?.value && animalStatusInput.value !== 'ativo') {
+          bloquearSalvar();
+        }
       }
     });
   }
+
+  bloquearSalvar();
 });

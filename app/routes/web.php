@@ -67,46 +67,46 @@ $routes = [
     ],
 
     '/animal/atualizar' => [
-    'controller' => 'AnimalController',
-    'method' => 'atualizar',
-    'auth' => true,
-    'roles' => ['administrador', 'gestor', 'operador']
+        'controller' => 'AnimalController',
+        'method' => 'atualizar',
+        'auth' => true,
+        'roles' => ['administrador', 'gestor', 'operador']
     ],
 
     '/animal/excluir' => [
-    'controller' => 'AnimalController',
-    'method' => 'excluir',
-    'auth' => true,
-    'roles' => ['administrador', 'gestor']
+        'controller' => 'AnimalController',
+        'method' => 'excluir',
+        'auth' => true,
+        'roles' => ['administrador', 'gestor']
     ],
 
     '/animal/historicoPeso' => [
-    'controller' => 'AnimalController',
-    'method' => 'historicoPeso',
-    'auth' => true,
-    'roles' => ['administrador', 'gestor', 'veterinario', 'operador']
-],
+        'controller' => 'AnimalController',
+        'method' => 'historicoPeso',
+        'auth' => true,
+        'roles' => ['administrador', 'gestor', 'veterinario', 'operador']
+    ],
 
     '/peso' => [
-    'controller' => 'PesoController',
-    'method' => 'index',
-    'auth' => true,
-    'roles' => ['administrador', 'gestor', 'veterinario', 'operador']
-],
+        'controller' => 'PesoController',
+        'method' => 'index',
+        'auth' => true,
+        'roles' => ['administrador', 'gestor', 'veterinario', 'operador']
+    ],
 
     '/peso/salvar' => [
-    'controller' => 'PesoController',
-    'method' => 'salvar',
-    'auth' => true,
-    'roles' => ['administrador', 'gestor', 'operador']
-],
+        'controller' => 'PesoController',
+        'method' => 'salvar',
+        'auth' => true,
+        'roles' => ['administrador', 'gestor', 'operador']
+    ],
 
-'/peso/historico' => [
-    'controller' => 'PesoController',
-    'method' => 'historico',
-    'auth' => true,
-    'roles' => ['administrador', 'gestor', 'veterinario', 'operador']
-],
+    '/peso/historico' => [
+        'controller' => 'PesoController',
+        'method' => 'historico',
+        'auth' => true,
+        'roles' => ['administrador', 'gestor', 'veterinario', 'operador']
+    ],
 
     '/vacinas' => [
         'controller' => 'VacinaController',

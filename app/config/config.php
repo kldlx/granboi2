@@ -1,6 +1,6 @@
 <?php
 
-define('BASE_URL', 'http://localhost/granboi');
+define('BASE_URL', 'http://localhost/granboiSolo');
 
 define('SENHAS_PERFIL', [
     'administrador' => 'admin2026',

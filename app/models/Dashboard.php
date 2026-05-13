@@ -174,27 +174,27 @@ class Dashboard
     }
 
     public function totalPorStatus($status)
-{
-    $sql = "SELECT COUNT(*) AS total 
+    {
+        $sql = "SELECT COUNT(*) AS total 
             FROM animal 
             WHERE status = :status";
 
-    $stmt = $this->db->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
-    $stmt->execute([
-        ':status' => $status
-    ]);
+        $stmt->execute([
+            ':status' => $status
+        ]);
 
-    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    return $res['total'] ?? 0;
-}
+        return $res['total'] ?? 0;
+    }
 
-public function ultimasPesagens($limit = 5)
-{
-    $limit = (int) $limit;
+    public function ultimasPesagens($limit = 5)
+    {
+        $limit = (int) $limit;
 
-    $sql = "
+        $sql = "
         SELECT 
             animal_peso_historico.id,
             animal_peso_historico.animal_id,
@@ -210,12 +210,12 @@ public function ultimasPesagens($limit = 5)
         LIMIT {$limit}
     ";
 
-    return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-public function vacinasPendentes()
-{
-    $sql = "
+    public function vacinasPendentes()
+    {
+        $sql = "
         SELECT COUNT(*) AS total
         FROM vacinacao
         INNER JOIN animal 
@@ -226,8 +226,8 @@ public function vacinasPendentes()
         AND animal.status = 'ativo'
     ";
 
-    $res = $this->db->query($sql)->fetch(PDO::FETCH_ASSOC);
+        $res = $this->db->query($sql)->fetch(PDO::FETCH_ASSOC);
 
-    return $res['total'] ?? 0;
-}
+        return $res['total'] ?? 0;
+    }
 }

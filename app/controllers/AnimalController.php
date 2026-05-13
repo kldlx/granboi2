@@ -14,13 +14,13 @@ class AnimalController extends Controller
                 '/public/assets/css/pages/animal/animal.css'
             ],
             'pageJs' => [
-    '/public/assets/js/validations/animal/animalValidation.js',
-    '/public/assets/js/modals/animal/cadastrarAnimalModal.js',
-    '/public/assets/js/modals/animal/editarAnimalModal.js',
-    '/public/assets/js/modals/animal/excluirAnimalModal.js',
-    '/public/assets/js/modals/animal/detalhesAnimalModal.js',
-    '/public/assets/js/pages/animal/animalPage.js'
-],
+                '/public/assets/js/validations/animal/animalValidation.js',
+                '/public/assets/js/modals/animal/cadastrarAnimalModal.js',
+                '/public/assets/js/modals/animal/editarAnimalModal.js',
+                '/public/assets/js/modals/animal/excluirAnimalModal.js',
+                '/public/assets/js/modals/animal/detalhesAnimalModal.js',
+                '/public/assets/js/pages/animal/animalPage.js'
+            ],
             'animais' => $model->listarTodos()
         ];
 
@@ -109,41 +109,41 @@ class AnimalController extends Controller
         try {
             $animalId = $model->salvar($dados);
 
-$pesagemModel = $this->model('Pesagem');
+            $pesagemModel = $this->model('Pesagem');
 
-$pesagemModel->registrar([
-    'animal_id' => $animalId,
-    'peso' => $dados['peso_entrada'],
-    'observacao' => 'Peso inicial registrado no cadastro do animal.'
-]);
+            $pesagemModel->registrar([
+                'animal_id' => $animalId,
+                'peso' => $dados['peso_entrada'],
+                'observacao' => 'Peso inicial registrado no cadastro do animal.'
+            ]);
 
-if ($isAjax) {
-    $this->json([
-        'sucesso' => true,
-        'mensagem' => 'Animal cadastrado com sucesso.'
-    ]);
-}
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => true,
+                    'mensagem' => 'Animal cadastrado com sucesso.'
+                ]);
+            }
 
             $_SESSION['sucesso'] = 'Animal cadastrado com sucesso.';
             $this->redirect('/animal');
 
         } catch (PDOException $e) {
-    $mensagem = 'Erro ao cadastrar animal. Verifique os dados e tente novamente.';
+            $mensagem = 'Erro ao cadastrar animal. Verifique os dados e tente novamente.';
 
-    if ($e->getCode() === '23000') {
-        $mensagem = 'Já existe um animal cadastrado com esse número de brinco.';
-    }
+            if ($e->getCode() === '23000') {
+                $mensagem = 'Já existe um animal cadastrado com esse número de brinco.';
+            }
 
-    if ($isAjax) {
-        $this->json([
-            'sucesso' => false,
-            'mensagem' => $mensagem
-        ], 500);
-    }
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => $mensagem
+                ], 500);
+            }
 
-    $_SESSION['erro'] = $mensagem;
-    $this->redirect('/animal');
-}
+            $_SESSION['erro'] = $mensagem;
+            $this->redirect('/animal');
+        }
     }
 
     public function editar()
@@ -333,13 +333,13 @@ if ($isAjax) {
     }
 
     public function historicoPeso()
-{
-    $id = $_GET['id'] ?? $_GET['animal_id'] ?? null;
+    {
+        $id = $_GET['id'] ?? $_GET['animal_id'] ?? null;
 
-    if ($id) {
-        $this->redirect('/peso?animal_id=' . $id);
+        if ($id) {
+            $this->redirect('/peso?animal_id=' . $id);
+        }
+
+        $this->redirect('/peso');
     }
-
-    $this->redirect('/peso');
-}
 }

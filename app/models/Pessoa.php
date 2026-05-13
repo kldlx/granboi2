@@ -3,7 +3,8 @@ require_once __DIR__ . '/conexao.php';
 
 // Classe com métodos para cadastro e gerenciamento de usuários
 // Trabalha com 3 tabelas: pessoa, usuario e usuario_papel
-class Pessoa {
+class Pessoa
+{
     private $pdo;
 
     public function __construct()
@@ -20,12 +21,12 @@ class Pessoa {
     {
         // Pegamos os dados que vieram do formulário ($_POST)
         $nome_completo = trim($dados['nome'] ?? '');
-        $nome_social   = trim($dados['nome_social'] ?? '');
-        $cpf           = trim($dados['cpf'] ?? '');
-        $telefone      = trim($dados['telefone'] ?? '');
-        $email         = trim($dados['email'] ?? '');
+        $nome_social = trim($dados['nome_social'] ?? '');
+        $cpf = trim($dados['cpf'] ?? '');
+        $telefone = trim($dados['telefone'] ?? '');
+        $email = trim($dados['email'] ?? '');
         $senhaOriginal = $dados['senha'] ?? '';
-        $papel         = $dados['papel'] ?? '';
+        $papel = $dados['papel'] ?? '';
 
         // Validação básica: nome, email e senha são obrigatórios
         if (empty($nome_completo) || empty($email) || empty($senhaOriginal)) {
@@ -64,11 +65,11 @@ class Pessoa {
                     (:nome, :social, :cpf, :tel, :email)
             ");
             $cmd->execute([
-                ':nome'   => $nome_completo,
+                ':nome' => $nome_completo,
                 ':social' => !empty($nome_social) ? $nome_social : null,
-                ':cpf'    => !empty($cpf) ? $cpf : null,
-                ':tel'    => !empty($telefone) ? $telefone : null,
-                ':email'  => $email
+                ':cpf' => !empty($cpf) ? $cpf : null,
+                ':tel' => !empty($telefone) ? $telefone : null,
+                ':email' => $email
             ]);
 
             // Pega o ID da pessoa que acabou de ser inserida
@@ -85,9 +86,9 @@ class Pessoa {
                     (:nome, :email, :senha, :pessoa_id)
             ");
             $cmd2->execute([
-                ':nome'      => $nome_completo,
-                ':email'     => $email,
-                ':senha'     => $senhaHash,
+                ':nome' => $nome_completo,
+                ':email' => $email,
+                ':senha' => $senhaHash,
                 ':pessoa_id' => $id_pessoa
             ]);
 
@@ -99,10 +100,14 @@ class Pessoa {
             // Os IDs dos papéis vêm do INSERT inicial no banco:
             //   1 = administrador, 2 = gestor, 3 = veterinario, 4 = operador
             $id_papel = 0;
-            if ($papel == "administrador") $id_papel = 1;
-            if ($papel == "gestor")        $id_papel = 2;
-            if ($papel == "veterinario")   $id_papel = 3;
-            if ($papel == "operador")      $id_papel = 4;
+            if ($papel == "administrador")
+                $id_papel = 1;
+            if ($papel == "gestor")
+                $id_papel = 2;
+            if ($papel == "veterinario")
+                $id_papel = 3;
+            if ($papel == "operador")
+                $id_papel = 4;
 
             if ($id_papel > 0) {
                 $cmd3 = $this->pdo->prepare("
@@ -145,7 +150,7 @@ class Pessoa {
 
         return [
             'usuario' => $dadosUsuario,
-            'pessoa'  => $dadosPessoa
+            'pessoa' => $dadosPessoa
         ];
     }
 
@@ -154,13 +159,13 @@ class Pessoa {
     // ========================================================
     public function atualizarUsuario($dados)
     {
-        $id            = isset($dados['id']) ? (int)$dados['id'] : 0;
+        $id = isset($dados['id']) ? (int) $dados['id'] : 0;
         $nome_completo = trim($dados['nome'] ?? '');
-        $nome_social   = trim($dados['nome_social'] ?? '');
-        $cpf           = trim($dados['cpf'] ?? '');
-        $telefone      = trim($dados['telefone'] ?? '');
-        $email         = trim($dados['email'] ?? '');
-        $senha         = $dados['senha'] ?? '';
+        $nome_social = trim($dados['nome_social'] ?? '');
+        $cpf = trim($dados['cpf'] ?? '');
+        $telefone = trim($dados['telefone'] ?? '');
+        $email = trim($dados['email'] ?? '');
+        $senha = $dados['senha'] ?? '';
 
         // Se digitou nova senha, criptografa. Senão, mantém a atual do banco.
         if (!empty($senha)) {
@@ -179,10 +184,10 @@ class Pessoa {
             WHERE id = :i
         ");
         $cmd->execute([
-            ':nome'  => $nome_completo,
+            ':nome' => $nome_completo,
             ':email' => $email,
             ':senha' => $senhaHash,
-            ':i'     => $id
+            ':i' => $id
         ]);
 
         // Busca o pessoa_id para saber qual registro de pessoa atualizar
@@ -203,12 +208,12 @@ class Pessoa {
             WHERE id = :i
         ");
         $cmd2->execute([
-            ':nome'   => $nome_completo,
+            ':nome' => $nome_completo,
             ':social' => !empty($nome_social) ? $nome_social : null,
-            ':cpf'    => $cpf,
-            ':tel'    => $telefone,
-            ':email'  => $email,
-            ':i'      => $pessoa_id
+            ':cpf' => $cpf,
+            ':tel' => $telefone,
+            ':email' => $email,
+            ':i' => $pessoa_id
         ]);
 
         return true;
@@ -254,8 +259,10 @@ class Pessoa {
     private function validarCPF($cpf)
     {
         $cpf = preg_replace('/[^0-9]/', '', $cpf);
-        if (strlen($cpf) != 11) return false;
-        if (preg_match('/(\d)\1{10}/', $cpf)) return false;
+        if (strlen($cpf) != 11)
+            return false;
+        if (preg_match('/(\d)\1{10}/', $cpf))
+            return false;
 
         for ($t = 9; $t < 11; $t++) {
             for ($d = 0, $c = 0; $c < $t; $c++) {
