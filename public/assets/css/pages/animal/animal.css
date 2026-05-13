@@ -1,0 +1,254 @@
+.page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-actions h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.page-actions p {
+  color: #777;
+  font-size: 14px;
+}
+
+.primary-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.primary-action:hover {
+  background: var(--primary-dark);
+}
+
+.table-container {
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  overflow-x: auto;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th {
+  text-align: left;
+  font-size: 13px;
+  color: #555;
+  padding: 14px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.table-container td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 14px;
+  color: var(--dark);
+}
+
+.table-container tr:last-child td {
+  border-bottom: none;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-ativo {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-vendido {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-morto {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-excluido {
+  background: #eeeeee;
+  color: #616161;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #f5f5f5;
+  color: var(--dark);
+  text-decoration: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s ease;
+}
+
+.action-btn:hover {
+  background: var(--light);
+}
+
+.action-btn.danger {
+  color: var(--danger);
+}
+
+.empty-message {
+  text-align: center;
+  color: #777;
+  padding: 28px;
+}
+
+@media (max-width: 768px) {
+  .page-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  }
+
+  .animal-create-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+  padding: 0 20px;
+
+  background: #0b4f1f !important;
+  color: #ffffff !important;
+
+  border: none !important;
+  outline: none !important;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  box-shadow: 0 8px 18px rgba(11, 79, 31, 0.22);
+  transition: 0.2s ease;
+}
+
+.animal-create-btn i,
+.animal-create-btn span {
+  color: #ffffff !important;
+}
+
+.animal-create-btn:hover {
+  background: #083d18 !important;
+  transform: translateY(-1px);
+}
+
+.animal-create-btn:active {
+  transform: translateY(0);
+}
+
+.animal-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  padding: 14px 18px;
+  margin: 18px 0 22px 0;
+
+  border-radius: 14px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.animal-message i {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.animal-message-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.animal-message-error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+@media (max-width: 768px) {
+  .page-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .animal-create-btn {
+    width: 100%;
+  }
+}
+
+.action-btn.pesagem-animal-btn {
+  color: #141313;
+}
+
+.action-btn-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: #999 !important;
+}
+
+.action-btn-disabled:hover {
+  background: #f5f5f5;
+  transform: none;
+}

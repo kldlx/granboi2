@@ -1,0 +1,153 @@
+.vacinacao-page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.vacinacao-page-actions h2 {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.vacinacao-page-actions p {
+  color: #777;
+  font-size: 14px;
+}
+
+.vacinacao-create-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+  padding: 0 20px;
+
+  background: #0b4f1f;
+  color: #fff;
+
+  border: none;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(11, 79, 31, 0.22);
+}
+
+.vacinacao-create-btn:hover {
+  background: #083d18;
+}
+
+.vacinacao-table-container {
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  overflow-x: auto;
+}
+
+.vacinacao-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vacinacao-table th {
+  text-align: left;
+  font-size: 13px;
+  color: #555;
+  padding: 14px 12px;
+  border-bottom: 1px solid #eee;
+  background: #f7f7f7;
+}
+
+.vacinacao-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 14px;
+  color: var(--dark);
+}
+
+.vacinacao-table tr:last-child td {
+  border-bottom: none;
+}
+
+.vacinacao-empty {
+  text-align: center;
+  color: #777;
+  padding: 26px;
+}
+
+.vacinacao-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 22px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.vacinacao-message-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.vacinacao-message-error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.vacinacao-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.vacinacao-status-aplicada {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.vacinacao-status-pendente {
+  background: #fff8e1;
+  color: #8a5a00;
+}
+
+.vacinacao-status-atrasada {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.vacinacao-status-cancelada {
+  background: #eeeeee;
+  color: #616161;
+}
+
+@media (max-width: 768px) {
+  .vacinacao-page-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vacinacao-create-btn {
+    width: 100%;
+  }
+}
