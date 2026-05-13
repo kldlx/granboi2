@@ -73,6 +73,62 @@ class Vacinacao
         ]);
     }
 
+    public function buscarPorId($id)
+    {
+        $sql = "
+            SELECT 
+                vacinacao.*,
+                animal.brinco_identificador,
+                animal.raca,
+                animal.status AS status_animal
+            FROM vacinacao
+            INNER JOIN animal 
+                ON animal.id = vacinacao.animal_id
+            WHERE vacinacao.id = :id
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function cancelar($id)
+    {
+        $sql = "
+            UPDATE vacinacao
+            SET status = 'cancelada',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = :id
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            ':id' => $id
+        ]);
+    }
+
+    public function reativar($id)
+    {
+        $sql = "
+            UPDATE vacinacao
+            SET status = 'aplicada',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = :id
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            ':id' => $id
+        ]);
+    }
+
     public function listarPorAnimal($animalId)
     {
         $sql = "

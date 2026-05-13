@@ -1,3 +1,13 @@
+<?php
+
+$viasAplicacaoLabels = [
+  'subcutanea' => 'Subcutânea',
+  'intramuscular' => 'Intramuscular',
+  'oral' => 'Oral'
+];
+
+?>
+
 <main class="main-content">
 
   <header class="topbar">
@@ -88,6 +98,7 @@
           <th>Responsável</th>
           <th>Via</th>
           <th>Status</th>
+          <th>Ações</th>
         </tr>
 
       </thead>
@@ -98,10 +109,21 @@
 
           <?php foreach ($vacinacoes as $vacinacao): ?>
 
+            <?php
+              $viaAplicacao = $vacinacao['via_aplicacao'] ?? '';
+              $viaAplicacaoLabel = $viasAplicacaoLabels[$viaAplicacao] ?? (!empty($viaAplicacao) ? ucfirst($viaAplicacao) : '-');
+
+              $animalLabel = '#' . $vacinacao['brinco_identificador'];
+
+              if (!empty($vacinacao['raca'])) {
+                $animalLabel .= ' - ' . $vacinacao['raca'];
+              }
+            ?>
+
             <tr>
 
               <td>
-                #<?= htmlspecialchars($vacinacao['brinco_identificador']) ?>
+                <?= htmlspecialchars($animalLabel) ?>
               </td>
 
               <td>
@@ -121,13 +143,65 @@
               </td>
 
               <td>
-                <?= htmlspecialchars($vacinacao['via_aplicacao'] ?? '-') ?>
+                <?= htmlspecialchars($viaAplicacaoLabel) ?>
               </td>
 
               <td>
                 <span class="vacinacao-status vacinacao-status-<?= htmlspecialchars($vacinacao['status']) ?>">
                   <?= ucfirst(htmlspecialchars($vacinacao['status'])) ?>
                 </span>
+              </td>
+
+              <td>
+                <div class="vacinacao-actions">
+
+                  <button
+                    type="button"
+                    class="vacinacao-action-btn detalhes-vacinacao-btn"
+                    title="Ver detalhes"
+                    data-animal="<?= htmlspecialchars($animalLabel) ?>"
+                    data-vacina="<?= htmlspecialchars($vacinacao['vacina']) ?>"
+                    data-data-aplicacao="<?= htmlspecialchars($vacinacao['data_aplicacao']) ?>"
+                    data-proxima-dose="<?= htmlspecialchars($vacinacao['proxima_dose'] ?? '') ?>"
+                    data-responsavel="<?= htmlspecialchars($vacinacao['responsavel'] ?? '') ?>"
+                    data-lote="<?= htmlspecialchars($vacinacao['lote_vacina'] ?? '') ?>"
+                    data-quantidade="<?= htmlspecialchars($vacinacao['quantidade'] ?? '') ?>"
+                    data-via="<?= htmlspecialchars($viaAplicacaoLabel) ?>"
+                    data-status="<?= htmlspecialchars($vacinacao['status']) ?>"
+                    data-observacoes="<?= htmlspecialchars($vacinacao['observacoes'] ?? '') ?>"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+
+                  <?php if ($vacinacao['status'] !== 'cancelada'): ?>
+
+                    <button
+                      type="button"
+                      class="vacinacao-action-btn vacinacao-action-danger cancelar-vacinacao-btn"
+                      title="Cancelar vacinação"
+                      data-id="<?= htmlspecialchars($vacinacao['id']) ?>"
+                      data-animal="<?= htmlspecialchars($animalLabel) ?>"
+                      data-vacina="<?= htmlspecialchars($vacinacao['vacina']) ?>"
+                    >
+                      <i class="ri-close-circle-line"></i>
+                    </button>
+
+                  <?php else: ?>
+
+                    <button
+                      type="button"
+                      class="vacinacao-action-btn vacinacao-action-restore reativar-vacinacao-btn"
+                      title="Reativar vacinação"
+                      data-id="<?= htmlspecialchars($vacinacao['id']) ?>"
+                      data-animal="<?= htmlspecialchars($animalLabel) ?>"
+                      data-vacina="<?= htmlspecialchars($vacinacao['vacina']) ?>"
+                    >
+                      <i class="ri-refresh-line"></i>
+                    </button>
+
+                  <?php endif; ?>
+
+                </div>
               </td>
 
             </tr>
@@ -137,7 +211,7 @@
         <?php else: ?>
 
           <tr>
-            <td colspan="7" class="vacinacao-empty">
+            <td colspan="8" class="vacinacao-empty">
               Nenhuma vacinação registrada.
             </td>
           </tr>
@@ -151,5 +225,8 @@
   </section>
 
   <?php require_once ROOT_PATH . '/app/views/components/modals/vacinacao/modal-cadastrar-vacinacao.php'; ?>
+  <?php require_once ROOT_PATH . '/app/views/components/modals/vacinacao/modal-detalhes-vacinacao.php'; ?>
+  <?php require_once ROOT_PATH . '/app/views/components/modals/vacinacao/modal-cancelar-vacinacao.php'; ?>
+  <?php require_once ROOT_PATH . '/app/views/components/modals/vacinacao/modal-reativar-vacinacao.php'; ?>
 
 </main>

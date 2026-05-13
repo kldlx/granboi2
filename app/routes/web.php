@@ -129,6 +129,20 @@ $routes = [
         'roles' => ['administrador', 'veterinario']
     ],
 
+    '/vacinas/cancelar' => [
+        'controller' => 'VacinaController',
+        'method' => 'cancelar',
+        'auth' => true,
+        'roles' => ['administrador', 'veterinario']
+    ],
+
+    '/vacinas/reativar' => [
+    'controller' => 'VacinaController',
+    'method' => 'reativar',
+    'auth' => true,
+    'roles' => ['administrador', 'veterinario']
+    ],
+
     '/financeiro' => [
         'controller' => 'FinanceiroController',
         'method' => 'index',

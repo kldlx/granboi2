@@ -151,3 +151,69 @@
     width: 100%;
   }
 }
+
+.vacinacao-table th:last-child,
+.vacinacao-table td:last-child {
+  text-align: center;
+}
+
+.vacinacao-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vacinacao-action-btn {
+  width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #f3f4f6;
+  color: #0b4f1f;
+
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+
+  transition: 0.2s ease;
+}
+
+.vacinacao-action-btn i {
+  line-height: 1;
+}
+
+.vacinacao-action-btn:hover {
+  background: #e8f5e9;
+}
+
+.vacinacao-action-danger {
+  color: #c62828;
+}
+
+.vacinacao-action-danger:hover {
+  background: #ffebee;
+}
+
+.vacinacao-action-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: #999;
+}
+
+.vacinacao-action-disabled:hover {
+  background: #f3f4f6;
+}
+
+.vacinacao-action-restore {
+  color: #1565c0;
+}
+
+.vacinacao-action-restore:hover {
+  background: #e3f2fd;
+}

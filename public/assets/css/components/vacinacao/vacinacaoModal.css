@@ -281,3 +281,236 @@
 .vacinacao-animal-warning[hidden] {
   display: none;
 }
+
+#modalDetalhesVacinacao .modal-container {
+  width: min(760px, calc(100% - 32px));
+  border-radius: 18px;
+}
+
+#modalDetalhesVacinacao .modal-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid #eee;
+}
+
+#modalDetalhesVacinacao .modal-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+#modalDetalhesVacinacao .modal-header p {
+  font-size: 14px;
+  color: #777;
+}
+
+#modalDetalhesVacinacao .close-modal {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  color: var(--dark);
+}
+
+#modalDetalhesVacinacao .close-modal:hover {
+  background: #f5f5f5;
+}
+
+.vacinacao-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.vacinacao-detail-item {
+  background: #f9fafb;
+  border: 1px solid #eef0f2;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.vacinacao-detail-item span {
+  display: block;
+  color: #777;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.vacinacao-detail-item strong {
+  color: var(--dark);
+  font-size: 15px;
+  font-weight: 800;
+  word-break: break-word;
+}
+
+.vacinacao-detail-full {
+  grid-column: 1 / -1;
+}
+
+#modalDetalhesVacinacao .modal-footer {
+  padding: 18px 28px 24px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#modalDetalhesVacinacao .btn-cancelar {
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+@media (max-width: 768px) {
+  .vacinacao-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal-cancelar-vacinacao-container {
+  width: min(560px, calc(100% - 32px));
+  border-radius: 18px;
+}
+
+.vacinacao-cancel-warning {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+
+  padding: 16px;
+  border-radius: 14px;
+
+  background: #fff8e1;
+  color: #8a5a00;
+  border: 1px solid #ffe0a3;
+}
+
+.vacinacao-cancel-warning i {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.vacinacao-cancel-warning > div > strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.vacinacao-cancel-warning p strong {
+  display: inline;
+  font-size: inherit;
+  font-weight: 900;
+  margin-bottom: 0;
+}
+
+.vacinacao-cancel-warning p {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.vacinacao-cancel-info {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px 14px;
+
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 14px;
+
+  background: #f9fafb;
+  border: 1px solid #eef0f2;
+}
+
+.vacinacao-cancel-info span {
+  color: #777;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.vacinacao-cancel-info strong {
+  color: var(--dark);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+#modalCancelarVacinacao .btn-danger {
+  background: #c62828;
+  color: #fff;
+}
+
+#modalCancelarVacinacao .btn-danger:hover {
+  background: #a81f1f;
+}
+
+#modalCancelarVacinacao .btn-danger:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.modal-reativar-vacinacao-container {
+  width: min(560px, calc(100% - 32px));
+  border-radius: 18px;
+}
+
+.vacinacao-restore-warning {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+
+  padding: 16px;
+  border-radius: 14px;
+
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #bbdefb;
+}
+
+.vacinacao-restore-warning i {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.vacinacao-restore-warning > div > strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.vacinacao-restore-warning p {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.vacinacao-restore-warning p strong {
+  display: inline;
+  font-size: inherit;
+  font-weight: 900;
+  margin-bottom: 0;
+}
+
+#modalReativarVacinacao .btn-restore {
+  background: #1565c0;
+  color: #fff;
+}
+
+#modalReativarVacinacao .btn-restore:hover {
+  background: #0d47a1;
+}
+
+#modalReativarVacinacao .btn-restore:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

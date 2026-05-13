@@ -17,6 +17,9 @@ class VacinaController extends Controller
             'pageJs' => [
                 '/public/assets/js/validations/vacinacao/vacinacaoValidation.js',
                 '/public/assets/js/modals/vacinacao/cadastrarVacinacaoModal.js',
+                '/public/assets/js/modals/vacinacao/detalhesVacinacaoModal.js',
+                '/public/assets/js/modals/vacinacao/cancelarVacinacaoModal.js',
+                '/public/assets/js/modals/vacinacao/reativarVacinacaoModal.js',
                 '/public/assets/js/pages/vacinas/vacinasPage.js'
             ],
             'vacinacoes' => $vacinacaoModel->listarTodas(),
@@ -132,6 +135,190 @@ class VacinaController extends Controller
 
         } catch (PDOException $e) {
             $mensagem = 'Erro ao registrar vacinação. Verifique os dados e tente novamente.';
+
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => $mensagem
+                ], 500);
+            }
+
+            $_SESSION['erro'] = $mensagem;
+            $this->redirect('/vacinas');
+        }
+    }
+
+    public function cancelar()
+    {
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Requisição inválida.'
+                ], 405);
+            }
+
+            $this->redirect('/vacinas');
+        }
+
+        $id = $_POST['id'] ?? null;
+
+        if (empty($id)) {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Vacinação não informada.'
+                ], 422);
+            }
+
+            $_SESSION['erro'] = 'Vacinação não informada.';
+            $this->redirect('/vacinas');
+        }
+
+        $vacinacaoModel = $this->model('Vacinacao');
+
+        $vacinacao = $vacinacaoModel->buscarPorId($id);
+
+        if (!$vacinacao) {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Vacinação não encontrada.'
+                ], 404);
+            }
+
+            $_SESSION['erro'] = 'Vacinação não encontrada.';
+            $this->redirect('/vacinas');
+        }
+
+        if ($vacinacao['status'] === 'cancelada') {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Esta vacinação já está cancelada.'
+                ], 422);
+            }
+
+            $_SESSION['erro'] = 'Esta vacinação já está cancelada.';
+            $this->redirect('/vacinas');
+        }
+
+        try {
+            $vacinacaoModel->cancelar($id);
+
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => true,
+                    'mensagem' => 'Vacinação cancelada com sucesso.'
+                ]);
+            }
+
+            $_SESSION['sucesso'] = 'Vacinação cancelada com sucesso.';
+            $this->redirect('/vacinas');
+
+        } catch (PDOException $e) {
+            $mensagem = 'Erro ao cancelar vacinação. Tente novamente.';
+
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => $mensagem
+                ], 500);
+            }
+
+            $_SESSION['erro'] = $mensagem;
+            $this->redirect('/vacinas');
+        }
+    }
+
+    public function reativar()
+    {
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Requisição inválida.'
+                ], 405);
+            }
+
+            $this->redirect('/vacinas');
+        }
+
+        $id = $_POST['id'] ?? null;
+
+        if (empty($id)) {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Vacinação não informada.'
+                ], 422);
+            }
+
+            $_SESSION['erro'] = 'Vacinação não informada.';
+            $this->redirect('/vacinas');
+        }
+
+        $vacinacaoModel = $this->model('Vacinacao');
+
+        $vacinacao = $vacinacaoModel->buscarPorId($id);
+
+        if (!$vacinacao) {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Vacinação não encontrada.'
+                ], 404);
+            }
+
+            $_SESSION['erro'] = 'Vacinação não encontrada.';
+            $this->redirect('/vacinas');
+        }
+
+        if ($vacinacao['status'] !== 'cancelada') {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Apenas vacinações canceladas podem ser reativadas.'
+                ], 422);
+            }
+
+            $_SESSION['erro'] = 'Apenas vacinações canceladas podem ser reativadas.';
+            $this->redirect('/vacinas');
+        }
+
+        if ($vacinacao['status_animal'] !== 'ativo') {
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Não é possível reativar vacinação de animal vendido ou morto.'
+                ], 422);
+            }
+
+            $_SESSION['erro'] = 'Não é possível reativar vacinação de animal vendido ou morto.';
+            $this->redirect('/vacinas');
+        }
+
+        try {
+            $vacinacaoModel->reativar($id);
+
+            if ($isAjax) {
+                $this->json([
+                    'sucesso' => true,
+                    'mensagem' => 'Vacinação reativada com sucesso.'
+                ]);
+            }
+
+            $_SESSION['sucesso'] = 'Vacinação reativada com sucesso.';
+            $this->redirect('/vacinas');
+
+        } catch (PDOException $e) {
+            $mensagem = 'Erro ao reativar vacinação. Tente novamente.';
 
             if ($isAjax) {
                 $this->json([
